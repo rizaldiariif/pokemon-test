@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { ApolloProvider } from '@apollo/client';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+import Header from './components/shared/Header';
+import client from './libs/client';
+import { StorageProvider } from './libs/storage';
+
+import MyPokemonList from './pages/MyPokemonList';
+import PokemonDetail from './pages/PokemonDetail';
+import PokemonList from './pages/PokemonList';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <StorageProvider>
+      <ApolloProvider client={client}>
+        <div className="App">
+          <Router>
+            <Header />
+            <Switch>
+              <Route path="/my-pokemon" component={MyPokemonList} />
+              <Route path="/:name" component={PokemonDetail} />
+              <Route path="/" component={PokemonList} />
+            </Switch>
+          </Router>
+        </div>
+      </ApolloProvider>
+    </StorageProvider>
   );
 }
 
